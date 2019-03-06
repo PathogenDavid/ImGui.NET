@@ -168,6 +168,13 @@ namespace CodeGenerator
                     string ov_cimguiname = val["ov_cimguiname"]?.ToString();
                     string cimguiname = val["cimguiname"].ToString();
                     string friendlyName = val["funcname"]?.ToString();
+
+                    // We have our own ImVector implementation, cimgui's bindings are not needed.
+                    if (cimguiname.StartsWith("ImVector_"))
+                    {
+                        return null;
+                    }
+
                     if (cimguiname.EndsWith("_destroy"))
                     {
                         friendlyName = "Destroy";
