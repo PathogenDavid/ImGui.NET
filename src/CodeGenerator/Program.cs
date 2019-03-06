@@ -517,6 +517,8 @@ namespace CodeGenerator
                         if (exportedName.Contains("~")) { continue; }
                         if (overload.Parameters.Any(tr => tr.Type.Contains('('))) { continue; } // TODO: Parse function pointer parameters.
 
+                        if (overload.IsMemberFunction) { continue; }
+
                         bool hasVaList = false;
                         for (int i = 0; i < overload.Parameters.Length; i++)
                         {
@@ -537,7 +539,6 @@ namespace CodeGenerator
 
                         for (int i = overload.DefaultValues.Count; i >= 0; i--)
                         {
-                            if (overload.IsMemberFunction) { continue; }
                             Dictionary<string, string> defaults = new Dictionary<string, string>();
                             for (int j = 0; j < i; j++)
                             {
@@ -1166,7 +1167,7 @@ namespace CodeGenerator
             DefaultValues = defaultValues;
             ReturnType = returnType.Replace("const", string.Empty).Replace("inline", string.Empty).Trim();
             StructName = structName;
-            IsMemberFunction = structName != "ImGui";
+            IsMemberFunction = structName.Length > 0;
             Comment = comment;
             IsConstructor = isConstructor;
             IsDestructor = isDestructor;
